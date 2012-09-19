@@ -1,0 +1,32 @@
+.oauth-login-link {
+  background-image:none;
+  padding-top:4px;
+  padding-bottom:4px;
+}
+.oauth-login-link [class^="icon-"],
+.oauth-login-link [class*=" icon-"] {
+  padding-right: 10px;
+  margin: 0px 6px 0 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 18px;
+  line-height: 23px;
+}
+.facebook-login-link,
+.twitter-login-link {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color:#3B5998;
+}
+.facebook-login-link:hover,
+.twitter-login-link:hover {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color:#4568AC;
+}
+.twitter-login-link{
+  background-color:#4099FF;
+}
+.twitter-login-link:hover{
+  background-color:#4AA4FF;
+}
+
