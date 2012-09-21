@@ -1,5 +1,5 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  
+
   def facebook
     begin
       @user = User.find_or_create_by_facebook_oauth(request.env["omniauth.auth"], current_user)
@@ -10,19 +10,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:error] = "Someone else has already connected with this Facebook account"
       redirect_to root_path
     else
-      if @user.last_sign_in_at.nil?
+      if @user.just_connected_facebook? || @user.last_sign_in_at.nil?
         flash[:notice] = "Successfully connected with your Facebook account."
-        sign_in(:user, @user, :event => :authentication)
-        redirect_to after_signin_path_for_resource(@user)
-      else
-        if @user.just_connected_facebook?
-          flash[:notice] = "Successfully connected with your Facebook account."
-        end
-        sign_in_and_redirect @user, :event => :authentication
       end
+      sign_in_and_redirect @user, :event => :authentication
     end
   end
-  
+
   def linkedin
     begin
       @user = User.find_or_create_by_linkedin_oauth(request.env["omniauth.auth"], current_user)
@@ -33,19 +27,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:error] = "Someone else has already connected with this LinkedIn account"
       redirect_to root_path
     else
-      if @user.last_sign_in_at.nil?
+      if @user.just_connected_linkedin? || @user.last_sign_in_at.nil?
         flash[:notice] = "Successfully connected with your LinkedIn account."
-        sign_in(:user, @user, :event => :authentication)
-        redirect_to welcome_users_path
-      else
-        if @user.just_connected_linkedin?
-          flash[:notice] = "Successfully connected with your LinkedIn account."
-        end
-        sign_in_and_redirect @user, :event => :authentication
       end
+      sign_in_and_redirect @user, :event => :authentication
     end
   end
-  
+
   def twitter
     oauth = request.env["omniauth.auth"]
     if @user = current_user
@@ -71,5 +59,5 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
   end
-  
+
 end
