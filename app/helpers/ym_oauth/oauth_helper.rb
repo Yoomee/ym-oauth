@@ -3,6 +3,10 @@ module YmOauth::OauthHelper
   def facebook_login_link(options={})
     oauth_login_link(:facebook, options)
   end
+    
+  def twitter_login_link(options={})
+    oauth_login_link(:twitter, options)
+  end
   
   def oauth_login_link(provider, options={})
     text=""

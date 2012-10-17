@@ -9,7 +9,9 @@ module YmOauth
 
       def manifest
         copy_file "initializers/devise.rb", "config/initializers/devise.rb"
+        copy_file "controllers/registrations_controller.rb", "app/controllers/registrations_controller.rb"
         insert_into_file "app/models/user.rb", "  include YmOauth::Facebook\n", :after => "include YmUsers::User\n"
+        insert_into_file "app/models/user.rb", "  include YmOauth::Twitter\n", :after => "include YmOauth::Facebook\n"
         try_migration_template "migrations/add_oauth_fields_to_users.rb", "db/migrate/add_oauth_fields_to_users"
       end
 

@@ -1,0 +1,17 @@
+.row
+  .span6.offset3
+    %h2.mt-3.mb-1 Nearly there...
+    -if @show_password
+      %p="You already have an account with the email address #{content_tag(:b,@user.email)}. Enter your password to log in and link to your Twitter account.".html_safe
+    =semantic_form_for @user, :url => twitter_registrations_path, :method => :post do |form|
+      =form.inputs do
+        =form.input :email, :as => @show_password ? :hidden : :string, :required => false, :label => "Please enter your email address"
+        =form.input :password if @show_password
+        =form.input :first_name, :as => :hidden
+        =form.input :last_name, :as => :hidden
+        =form.input :twitter_uid, :as => :hidden
+        =form.input :twitter_screen_name, :as => :hidden
+      -if @show_password
+        =form.commit_button t(:login), :button_html => {:class => "black-btn", :data => {:"loading-text" => "Logging in..."}}
+      -else
+        =form.commit_button "Sign up", :button_html => {:class => "black-btn", :data => {:"loading-text" => "Signing up..."}}
