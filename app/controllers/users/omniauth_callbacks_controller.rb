@@ -29,10 +29,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def linkedin
     begin
       @user = User.find_or_create_by_linkedin_oauth(request.env["omniauth.auth"], current_user)
-    rescue User::LinkedinAuth::ConnectedWithDifferentAccountError => e
+    rescue YmOauth::Linkedin::ConnectedWithDifferentAccountError => e
       flash[:error] = "You have already connected with a different LinkedIn account"
       redirect_to root_path
-    rescue User::LinkedinAuth::AccountAlreadyUsedError => e
+    rescue YmOauth::Linkedin::AccountAlreadyUsedError => e
       flash[:error] = "Someone else has already connected with this LinkedIn account"
       redirect_to root_path
     else
@@ -51,10 +51,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         @user.save
         flash[:notice] = "Successfully connected with your Twitter account." if @user.just_connected_twitter?
         sign_in_and_redirect @user, :event => :authentication
-      rescue User::TwitterAuth::ConnectedWithDifferentAccountError => e
+      rescue YmOauth::Twitter::ConnectedWithDifferentAccountError => e
         flash[:error] = "You have already connected with a different Twitter account"
         redirect_to root_path
-      rescue User::TwitterAuth::AccountAlreadyUsedError => e
+      rescue YmOauth::Twitter::AccountAlreadyUsedError => e
         flash[:error] = "Someone else has already connected with this Twitter account"
         redirect_to root_path
       end
