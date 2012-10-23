@@ -1,8 +1,17 @@
+require 'mogli'
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def facebook
     begin
-      @user = User.find_or_create_by_facebook_oauth(request.env["omniauth.auth"], current_user)
+      auth = request.env["omniauth.auth"]
+      @user = User.find_or_create_by_facebook_oauth(auth, current_user)
+      if @user.respond_to?(:facebook_oauth_token)
+        extended_token = facebook_authenticator.extend_access_token(auth.credentials.token)
+        @user.update_attributes(
+          :facebook_oauth_token => extended_token["access_token"],
+          :facebook_oauth_token_expires_at => Time.now + extended_token["expires"].to_i
+        )
+      end
     rescue YmOauth::Facebook::ConnectedWithDifferentAccountError => e
       flash[:error] = "You have already connected with a different Facebook account"
       redirect_to root_path
@@ -58,6 +67,15 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     end
 
+  end
+  
+  private
+  def facebook_authenticator
+    @facebook_authenticator ||= Mogli::Authenticator.new(
+      Devise.omniauth_configs[:facebook].strategy.client_id,
+      Devise.omniauth_configs[:facebook].strategy.client_secret,
+      nil
+    )
   end
 
 end
