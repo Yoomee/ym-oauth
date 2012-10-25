@@ -12,10 +12,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           :facebook_oauth_token_expires_at => Time.now + extended_token["expires"].to_i
         )
       end
-    rescue YmOauth::Facebook::ConnectedWithDifferentAccountError => e
+    rescue YmOauth::FacebookOauth::ConnectedWithDifferentAccountError => e
       flash[:error] = "You have already connected with a different Facebook account"
       redirect_to root_path
-    rescue YmOauth::Facebook::AccountAlreadyUsedError => e
+    rescue YmOauth::FacebookOauth::AccountAlreadyUsedError => e
       flash[:error] = "Someone else has already connected with this Facebook account"
       redirect_to root_path
     else
@@ -45,16 +45,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def twitter
     oauth = request.env["omniauth.auth"]
+    oauth.extra.access_type = params[:x_auth_access_type].presence || "read"
     if @user = current_user
       begin
         @user.connect_to_twitter_auth(oauth)
         @user.save
-        flash[:notice] = "Successfully connected with your Twitter account." if @user.just_connected_twitter?
+        flash[:notice] = "Successfully connected with your Twitter account."
         sign_in_and_redirect @user, :event => :authentication
-      rescue YmOauth::Twitter::ConnectedWithDifferentAccountError => e
+      rescue YmOauth::TwitterOauth::ConnectedWithDifferentAccountError => e
         flash[:error] = "You have already connected with a different Twitter account"
         redirect_to root_path
-      rescue YmOauth::Twitter::AccountAlreadyUsedError => e
+      rescue YmOauth::TwitterOauth::AccountAlreadyUsedError => e
         flash[:error] = "Someone else has already connected with this Twitter account"
         redirect_to root_path
       end

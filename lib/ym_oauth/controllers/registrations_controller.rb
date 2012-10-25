@@ -24,10 +24,10 @@ module YmOauth::RegistrationsController
           @show_password = true
         end
       end
-    rescue User::TwitterAuth::ConnectedWithDifferentAccountError => e
+    rescue YmOauth::TwitterOauth::ConnectedWithDifferentAccountError => e
       flash[:error] = "You have already connected with a different Twitter account"
       redirect_to root_path
-    rescue User::TwitterAuth::AccountAlreadyUsedError => e
+    rescue YmOauth::TwitterOauth::AccountAlreadyUsedError => e
       flash[:error] = "Someone else has already connected with this Twitter account"
       redirect_to root_path
     end

@@ -11,6 +11,8 @@
         =form.input :last_name, :as => :hidden
         =form.input :twitter_uid, :as => :hidden
         =form.input :twitter_screen_name, :as => :hidden
+        =form.input :twitter_oauth_token, :as => :hidden if @user.respond_to?(:twitter_oauth_token)
+        =form.input :twitter_oauth_secret, :as => :hidden if @user.respond_to?(:twitter_oauth_secret)
       -if @show_password
         =form.commit_button t(:login), :button_html => {:class => "black-btn", :data => {:"loading-text" => "Logging in..."}}
       -else

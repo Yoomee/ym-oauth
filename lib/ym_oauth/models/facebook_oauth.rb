@@ -1,4 +1,4 @@
-module YmOauth::Facebook
+module YmOauth::FacebookOauth
 
   def self.included(base)
     base.devise :omniauthable
@@ -47,5 +47,10 @@ module YmOauth::Facebook
   
   class ConnectedWithDifferentAccountError < StandardError; end
   class AccountAlreadyUsedError < StandardError; end
+  
+  private
+  def facebook_client
+    @facebook_client ||= Mogli::Client.new(facebook_oauth_token)
+  end
   
 end
