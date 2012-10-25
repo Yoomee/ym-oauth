@@ -45,12 +45,11 @@ module YmOauth::FacebookOauth
     
   end
   
-  class ConnectedWithDifferentAccountError < StandardError; end
-  class AccountAlreadyUsedError < StandardError; end
-  
-  private
   def facebook_client
     @facebook_client ||= Mogli::Client.new(facebook_oauth_token)
   end
+  
+  class ConnectedWithDifferentAccountError < StandardError; end
+  class AccountAlreadyUsedError < StandardError; end
   
 end

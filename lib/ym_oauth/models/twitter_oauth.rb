@@ -28,10 +28,7 @@ module YmOauth::TwitterOauth
   end
   
   def connect_to_twitter_auth(auth)
-    debugger
-    if full_name.blank?
-      self.full_name = auth.extra.raw_info.name
-    end
+    self.full_name = auth.extra.raw_info.name if full_name.blank?
     self.twitter_screen_name = auth.extra.raw_info.screen_name
     if respond_to?(:twitter_oauth_token)
       if auth.extra.access_type == "write" || twitter_oauth_token.blank? || twitter_oauth_access_level == "read"
@@ -44,7 +41,6 @@ module YmOauth::TwitterOauth
         end
       end
       if overwrite_oauth_details
-        logger.info "OVERWRITING TWITTER OAUTH DETAILS"
         self.twitter_oauth_token  = auth.credentials.token 
         self.twitter_oauth_secret = auth.credentials.secret
         self.twitter_oauth_access_level = auth.extra.access_type
@@ -67,10 +63,6 @@ module YmOauth::TwitterOauth
     end
   end
   
-  class ConnectedWithDifferentAccountError < StandardError; end
-  class AccountAlreadyUsedError < StandardError; end
-  
-  private
   def twitter_client
     @twitter_client ||= Twitter::Client.new(
       :consumer_key => Devise.omniauth_configs[:twitter].strategy.consumer_key,
@@ -79,5 +71,8 @@ module YmOauth::TwitterOauth
       :oauth_token_secret => twitter_oauth_secret
     )
   end
+  
+  class ConnectedWithDifferentAccountError < StandardError; end
+  class AccountAlreadyUsedError < StandardError; end
   
 end
