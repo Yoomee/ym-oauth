@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sqlite3"
   s.add_dependency 'ym_core', '~> 0.1'
   s.add_dependency 'ym_users'
-  s.add_dependency 'omniauth-facebook'
+  s.add_dependency 'omniauth-facebook', '=1.4.0'
   s.add_dependency 'mogli'
   s.add_dependency 'omniauth-twitter'
   s.add_dependency 'twitter'
