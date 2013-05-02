@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'mogli'
   s.add_dependency 'omniauth-twitter'
   s.add_dependency 'twitter'
-  s.add_dependency 'multi_json', '=1.2.0'
+  s.add_dependency 'multi_json', '> 1.2.0'
   
 
   s.add_development_dependency 'rspec-rails'
