@@ -9,7 +9,7 @@ module YmOauth::FacebookOauth
   
   module ClassMethods
     
-    def find_or_create_by_facebook_oauth(auth, current_user = nil)
+    def find_or_create_by_facebook_oauth(auth, current_user = nil, options = {})
       if current_user
         user = current_user
         if current_user.facebook_uid.present?
@@ -28,7 +28,7 @@ module YmOauth::FacebookOauth
         set_facebook_uid(user, auth.uid) # connecting user for the first time while logged out
       else
         # creating account for first time
-        user = User.new(auth.extra.raw_info.to_hash.slice('first_name', 'last_name', 'email'))
+        user = User.new(auth.extra.raw_info.to_hash.slice('first_name', 'last_name', 'email').reverse_merge(options))
         user.password = Devise.friendly_token[0,20]
         set_facebook_uid(user, auth.uid)
       end
