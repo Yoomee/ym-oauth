@@ -40,7 +40,7 @@ module YmOauth::FacebookOauth
     def set_facebook_uid(user, auth_uid)
       user.just_connected_facebook = true
       user.facebook_uid = auth_uid
-      user.image_url = "http://graph.facebook.com/#{auth_uid}/picture?type=large" if user.image.nil?
+      user.image_url = "https://graph.facebook.com/#{auth_uid}/picture?type=large" if user.image.nil?
     end
     
   end
