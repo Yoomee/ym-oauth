@@ -58,7 +58,7 @@ module YmOauth::TwitterOauth
     else
       self.twitter_uid = uid
       if image.nil?
-        self.image_url = "https://api.twitter.com/1/users/profile_image?screen_name=#{twitter_screen_name}&size=original"
+        self.image_url = twitter_client.user(uid.to_i).profile_image_url_https.sub!("_normal.", "_200x200.")
       end
     end
   end
