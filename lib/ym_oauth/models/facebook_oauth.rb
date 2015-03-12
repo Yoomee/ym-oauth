@@ -2,7 +2,7 @@ module YmOauth::FacebookOauth
 
   def self.included(base)
     base.devise :omniauthable
-    base.validates :facebook_uid, :uniqueness => true
+    base.validates :facebook_uid, :uniqueness => true, :allow_nil => true
     base.boolean_accessor :just_connected_facebook
     base.extend ClassMethods
   end
