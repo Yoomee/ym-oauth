@@ -31,6 +31,7 @@ module YmOauth::FacebookOauth
         user = User.new(auth.extra.raw_info.to_hash.slice('first_name', 'last_name', 'email').reverse_merge(options))
         user.password = Devise.friendly_token[0,20]
         set_facebook_uid(user, auth.uid)
+        user.skip_confirmation!
       end
       user.save
       user
